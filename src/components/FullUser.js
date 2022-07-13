@@ -1,30 +1,31 @@
 import React, {Component} from 'react';
-import {withRouter} from "react-router-dom";
+import {Link, Route, Switch, withRouter} from "react-router-dom";
 import UserService from "../services/userService";
-import PostService from "../services/postService";
 import Posts from "./Posts";
 
 class FullUser extends Component {
 
-    state = {fullUser: null, postsUser: []};
+    state = {fullUser: null};
 
     userService = new UserService();
-    postService = new PostService();
+
+
 
     async componentDidMount() {
         let {match: {params: {id}}} = this.props;
         let fullUser = await this.userService.getUserById(id);
-        let postsUser = await this.postService.getPostOfUser(id);
         this.setState({
             fullUser: fullUser,
-            postsUser: postsUser
         })
     }
 
 
     render() {
 
-        let {fullUser, postsUser} = this.state;
+        let {fullUser} = this.state;
+        let {match: {url}} = this.props;
+        let {match: {params: {id}}} = this.props;
+
 
         return (
             <div>
@@ -39,18 +40,37 @@ class FullUser extends Component {
                         <div>
                             Posts:
                         </div>
+
                         <div>
-                            {
-                                postsUser.map(value => {
-                                    return (
-                                        <Posts
-                                            item={value}
-                                            key={value.id}
-                                        />
-                                    )
-                                })
-                            }
+                            <Link to={`${url}/comments`}>Posts of user</Link>
                         </div>
+
+                    <div>
+                        <Switch>
+                            <Route path={`${url}/comments`} render={(index) => {
+                                return(
+                                    <Posts
+                                        idUser = {id}
+                                        key = {index}
+                                    />
+                                )
+                            }
+                            }/>
+                        </Switch>
+                    </div>
+
+                        {/*<div>*/}
+                        {/*    {*/}
+                        {/*        postsUser.map(value => {*/}
+                        {/*            return (*/}
+                        {/*                <Posts*/}
+                        {/*                    item={value}*/}
+                        {/*                    key={value.id}*/}
+                        {/*                />*/}
+                        {/*            )*/}
+                        {/*        })*/}
+                        {/*    }*/}
+                        {/*</div>*/}
                     </h3>
                 }
             </div>
