@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Link, Route, Switch} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import Users from "./components/Users";
+import UserContainer from "./components/UserContainer";
+import FullUser from "./components/FullUser";
 
 
 class App extends Component {
@@ -12,13 +14,14 @@ class App extends Component {
                 </div>
 
                 <div>
-                    <Switch>
-                        <Route path={'/users'} render={() => {
-                            return(
-                                <Users/>
-                            )
-                        }}/>
-                    </Switch>
+                    <Routes>
+                        <Route path={'/users/'} element={<UserContainer/>}>
+                            <Route index element={<Users/>}/>
+                            <Route path={'*'} element={<Users/>}/>
+                            <Route path={':id'} element={<FullUser/>}/>
+
+                        </Route>
+                    </Routes>
                 </div>
             </div>
 

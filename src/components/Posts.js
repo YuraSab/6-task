@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import PostService from "../services/postService";
 import Post from "./Post";
 
 class Posts extends Component {
 
-    state = {postsUser: []};
 
-    postService = new PostService();
 
     async componentDidMount() {
         let {idUser} = this.props;
